@@ -2,6 +2,7 @@ package com.quanh.cruddemoadvance.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,8 @@ public class Course {
     @JoinColumn(name="instructor_id")
     private Instructor instructor;
 
-    @OneToMany(mappedBy = "review", cascade = {CascadeType.DETACH, CascadeType.MERGE,  CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="course_id")
     private List<Review> reviews;
 
     public Course (){}
@@ -51,6 +53,13 @@ public class Course {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public void addReview(Review theReview) {
+        if(reviews == null) {
+            reviews = new ArrayList<>();
+        }
+        reviews.add(theReview);
     }
 
     @Override

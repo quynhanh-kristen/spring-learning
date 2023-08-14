@@ -4,6 +4,7 @@ import com.quanh.cruddemoadvance.dao.AppDAO;
 import com.quanh.cruddemoadvance.entity.Course;
 import com.quanh.cruddemoadvance.entity.Instructor;
 import com.quanh.cruddemoadvance.entity.InstructorDetail;
+import com.quanh.cruddemoadvance.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +22,38 @@ public class CruddemoadvanceApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(AppDAO appDAO) {
 		return runner -> {
-
+			//createCourseAndReviews(appDAO);
+			//retrieveCourseAndReviews(appDAO);
+			deleteCourseAndReviews(appDAO);
 		};
+	}
+
+	private void deleteCourseAndReviews(AppDAO appDAO) {
+		int theId = 10;
+
+		appDAO.deleteCourseById(theId);
+	}
+
+	private void retrieveCourseAndReviews(AppDAO appDAO) {
+		int theid = 10;
+		Course tempCourse = appDAO.findCourseAndReviewByCourseId(theid);
+
+		System.out.println(tempCourse);
+		System.out.println(tempCourse.getReviews());
+	}
+	private void createCourseAndReviews (AppDAO appDAO) {
+		Course theCourse = new Course("Pacman - How to score 1 million points");
+
+		theCourse.addReview(new Review("Great course... I love it !!!"));
+		theCourse.addReview(new Review("Cool course, job well done."));
+		theCourse.addReview(new Review("What a dumb course, you are an idiot"));
+		theCourse.addReview(new Review("Nice course"));
+
+		System.out.println("Saving the course");
+		System.out.println(theCourse);
+		System.out.println(theCourse.getReviews());
+
+		appDAO.save(theCourse);
 	}
 
 	private void deleteCourse(AppDAO appDAO) {
